@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_0597bfcf-d729-4d73-99a1-373008e97348
+    types: pipeline_034244df-984d-45f3-a0bd-67ca3746c1f5
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -193,7 +193,8 @@ jobs:
                   "phases": {
                     "install": {
                       "commands": [
-                        "${{ env.APP_INSTALL_DEPS_PRE_COMMAND }} && ${{ env.APP_INSTALL_DEPS_COMMAND }}"
+                        "${{ env.APP_INSTALL_DEPS_PRE_COMMAND }}",
+                        "${{ env.APP_INSTALL_DEPS_COMMAND }}"
                       ]
                     },
                     "build": {
