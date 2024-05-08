@@ -20,8 +20,9 @@ jobs:
     steps:
       - name: 'Run :: Checkout repository for Code Scan'
         uses: actions/checkout@v4
-      - name: Print repository URL
-        run: echo "Repository URL: ${{ github.repository }}"
+      - name: 'Print repository URL'
+        run: |
+          echo "Repository URL: ${{ github.repository }}"
       - name: 'Run :: Decoding Secrets'
         run: |2-
 
