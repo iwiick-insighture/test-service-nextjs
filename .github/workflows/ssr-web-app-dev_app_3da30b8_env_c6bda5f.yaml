@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_14ff4e89-4e4c-46f6-926b-5935c029c9e1
+    types: pipeline_f6f6407b-945a-481e-9521-0341b70b420f
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -215,8 +215,9 @@ jobs:
                 echo "Amplify App already exists."
               else
                 echo "Initializing the Amplify App"
+                formattedRepoUrl=$(echo "${{ github.repositoryUrl }}" | sed 's/git:///https:///')
                 create_app=$(
-                  aws amplify create-app         --name ${{ env.APPLICATION_NAME }}         --platform WEB_COMPUTE         --repository ${{ github.repositoryUrl }}         --environment-variables "Branch=${{ github.ref }},Commit=${{ github.sha }}"         --access-token ${{ secrets.GITHUB_TOKEN }}         --region ${{ env.region }}         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec"       )
+                  aws amplify create-app         --name ${{ env.APPLICATION_NAME }}         --platform WEB_COMPUTE         --repository $formattedRepoUrl         --environment-variables "Branch=${{ github.ref }},Commit=${{ github.sha }}"         --access-token ${{ secrets.GITHUB_TOKEN }}         --region ${{ env.region }}         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec"       )
                 app_id=$(echo $create_app | jq -r '.app.appId')
               fi
               
