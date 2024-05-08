@@ -204,7 +204,9 @@ jobs:
                   },
                   "artifacts": {
                     "baseDirectory": ".next",
-                    "files": "**/*"
+                    "files": [
+                      "**/*"
+                    ]
                   }
                 }
               }'
