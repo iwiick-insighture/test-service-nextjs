@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_62df84ef-c490-49cc-bea1-8b33b78e7abc
+    types: pipeline_291a9ee7-451f-4168-9dde-be7d99edeafc
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -20,9 +20,6 @@ jobs:
     steps:
       - name: 'Run :: Checkout repository for Code Scan'
         uses: actions/checkout@v4
-      - name: 'Print repository URL'
-        run: |
-          echo "Repository URL: ${{ github.repository }}"
       - name: 'Run :: Decoding Secrets'
         run: |2-
 
@@ -164,12 +161,6 @@ jobs:
                 fi
                 echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done
                 
-      - name: 'Run :: Configure AWS credentials'
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.roleARN }}
-          role-session-name: skyu-pipeline-assume-role-session
-          aws-region: ${{ env.region }}
       - name: 'Run :: Initialize AWS Amplify'
         id: initialize-amplify
         run: |2-
@@ -196,17 +187,17 @@ jobs:
                   "phases": {
                     "install": {
                       "commands": [
-                        "pnpm install"
+                        "${{ env.APP_INSTALL_DEPS_PRE_COMMAND }} && ${{ env.APP_INSTALL_DEPS_COMMAND }}"
                       ]
                     },
                     "build": {
                       "commands": [
-                        "pnpm run build"
+                        "${{ env.APP_BUILD_COMMAND }}"
                       ]
                     }
                   },
                   "artifacts": {
-                    "baseDirectory": ".next",
+                    "baseDirectory": "${{ env.APP_BUILD_FOLDER }}",
                     "files": [
                       "**/*"
                     ]
@@ -219,7 +210,7 @@ jobs:
               else
                 echo "Initializing the Amplify App"
                 create_app=$(
-                  aws amplify create-app         --name ${{ env.APPLICATION_NAME }}         --platform WEB_COMPUTE         --repository https://github.com/iwiick-insighture/test-service-nextjs.git         --environment-variables "Branch=${{ github.ref }},Commit=${{ github.sha }}"         --access-token ${{ secrets.MY_TOKEN }}         --region ${{ env.region }}         --iam-service-role-arn arn:aws:iam::272133924862:role/iwiick-admin-access-role         --build-spec "$build_spec"       )
+                  aws amplify create-app         --name ${{ env.APPLICATION_NAME }}         --platform WEB_COMPUTE         --repository ${{ github.repositoryUrl }}         --environment-variables "Branch=${{ github.ref }},Commit=${{ github.sha }}"         --access-token ${{ secrets.GITHUB_TOKEN }}         --region ${{ env.region }}         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec"       )
                 app_id=$(echo $create_app | jq -r '.app.appId')
               fi
               
@@ -232,10 +223,10 @@ jobs:
               appId=${{ steps.initialize-amplify.outputs.appId }}
 
               echo "Creating Deployment branch"
-              aws amplify create-branch --app-id $appId --branch-name master || true
+              aws amplify create-branch --stage PRODUCTION --app-id $appId --branch-name ${{ github.ref_type }} || true
 
               echo "Starting Amplify Job"
-              aws amplify start-job --app-id $appId --branch-name master --job-type RELEASE
+              aws amplify start-job --app-id $appId --branch-name ${{ github.ref_type }} --job-type RELEASE
               
   _status-success:
     name: _status Success
