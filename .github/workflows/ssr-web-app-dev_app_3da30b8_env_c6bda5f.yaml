@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_6b8418fc-cf2a-4a91-bdf4-ad7db35ec3e8
+    types: pipeline_92466bac-4aaf-4990-8b26-5c3e3cf2486a
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -214,7 +214,8 @@ jobs:
 
               if [ -n "$app_id" ]; then
                 echo "Amplify App already exists. Updating..."
-                aws amplify update-app         --environment-variables "Branch=${{ github.ref }},Commit=${{ github.sha }}"         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec"     else
+                aws amplify update-app         --app-id "$app_id         --environment-variables "Branch=${{ github.ref }},Commit=${{ github.sha }}"         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec" 
+              else
                 echo "Initializing new Amplify App"
                 formattedRepoUrl=$(echo "${{ github.repositoryUrl }}" | sed 's|git://|https://|') 
                 echo "Formatted Repository URL: $formattedRepoUrl"
