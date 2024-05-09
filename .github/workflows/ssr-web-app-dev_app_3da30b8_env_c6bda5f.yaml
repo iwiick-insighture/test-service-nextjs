@@ -176,7 +176,8 @@ jobs:
               app_list=$(aws amplify list-apps --no-paginate --region ${{ env.region }})
               echo "$app_list" > app_list.json
               cat app_list.json
-              # app_id=$(cat app_list.json| jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}")' | jq -r .appId)
+              app_id=$(cat app_list.json| jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}")' | jq -r .appId)
+              echo "App IDDDDDDDDDDDDDDDD: $app_id"
               # app_id=`cat app_list.json| jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}")' | jq -r .appId`
 
               build_spec='{
