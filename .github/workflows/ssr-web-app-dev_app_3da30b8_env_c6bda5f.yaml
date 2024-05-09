@@ -202,8 +202,7 @@ jobs:
               }'
 
               if [ -n "$app_id" ]; then
-                echo "Hi"
-                # echo "Amplify App already exists. Updating..."
+                echo "Amplify App already exists. Updating..."
                 # aws amplify update-app         --app-id "$app_id         --environment-variables "Branch=${{ github.ref }},Commit=${{ github.sha }}"         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec" 
               else
                 echo "Initializing new Amplify App"
