@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_a51586ef-bf91-48df-a33b-4d3545de2204
+    types: pipeline_d985aa11-b351-496b-af54-4c98f1393fcb
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -180,7 +180,7 @@ jobs:
                     echo "No Amplify Apps found."
                     break
                 fi
-                app_id=$(echo $app_list | jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}") | .appId')
+                app_id=$(echo $app_list | jq -r '.apps[] | select(.name == \"${{ env.APPLICATION_NAME }}\") | .appId')
                 next_token=$(echo $app_list | jq -r '.nextToken')
                 if [ -z "$next_token" ]; then
                     break
