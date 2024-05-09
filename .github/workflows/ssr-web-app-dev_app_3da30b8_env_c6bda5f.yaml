@@ -172,11 +172,7 @@ jobs:
         run: |2-
 
               echo "Fetching Amplify Apps"
-              app_id=""
               app_list=$(aws amplify list-apps --no-paginate --region ${{ env.region }})
-              echo "$app_list" > app_list.json
-              cat app_list.json
-              # app_id=$(cat app_list.json| jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}")' | jq -r .appId)
               app_id=$(echo "$app_list" | jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}")' | jq -r .appId)
               echo "App IDDDDDDDDDDDDDDDD: $app_id"
 
