@@ -174,8 +174,10 @@ jobs:
               echo "Fetching Amplify Apps"
               app_id=""
               app_list=$(aws amplify list-apps --no-paginate --region ${{ env.region }})
-              echo "App List: $(echo $app_list | jq -r '.apps')"
-              app_id=$(echo "$app_list" | jq -r '.apps | select(.name == "${{ env.APPLICATION_NAME }}")')
+              echo "$app_list" > app_list.json
+              # echo "App List: $(echo $app_list | jq -r '.apps')"
+              app_id=$(cat app_list.json| jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}")' | jq -r .appId)
+              # app_id=$(echo "$app_list" | jq -r '.apps | select(.name == "${{ env.APPLICATION_NAME }}")')
 
               build_spec='{
                 "version": 1,
