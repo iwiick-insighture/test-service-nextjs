@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_92466bac-4aaf-4990-8b26-5c3e3cf2486a
+    types: pipeline_175074af-9e8d-482e-bb92-177af1679191
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -172,20 +172,17 @@ jobs:
         run: |2-
 
               echo "Fetching Amplify Apps"
-              app_id=""
-              next_token=""
-              while [ -z "$app_id" ]; do
-                app_list=$(aws amplify list-apps --max-results 100 --next-token "$next_token" || true)
-                if [ -z "$app_list" ]; then
-                    echo "No Amplify Apps found."
-                    break
+              app_list=$(aws amplify list-apps --no-paginate --region ${{ env.region }} || true)
+              if [ -z "$app_list" ]; then
+                  echo "No Amplify Apps found."
+              else
+                app_id=$(echo "$app_list" | jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}") | .appId')
+                if [ -z "$app_id" ]; then
+                    echo "No Amplify Apps found with the specified name."
+                else
+                    echo "Amplify App ID: $app_id"
                 fi
-                app_id=$(echo $app_list | jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}") | .appId')
-                next_token=$(echo $app_list | jq -r '.nextToken')
-                if [ -z "$next_token" ]; then
-                    break
-                fi
-              done
+              fi
 
               build_spec='{
                 "version": 1,
