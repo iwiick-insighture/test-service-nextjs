@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_581524c7-3781-477b-b395-37fa29469231
+    types: pipeline_b2209e81-53b0-44af-9a8b-854f2c033d97
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -181,6 +181,7 @@ jobs:
                     break
                 fi
 
+                echo "Apps: $app_list"
                 app_id=$(echo "$app_list" | jq -r '.apps | map(select((any(.name == "${{ env.APPLICATION_NAME }}"))))')
                 next_token=$(echo $app_list | jq -r '.nextToken')
                 if [ -z "$next_token" ]; then
