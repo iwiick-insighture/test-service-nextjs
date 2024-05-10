@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_9654859d-3810-4a6a-8e3c-ddfa4f323435
+    types: pipeline_efe6f665-e8a7-4955-98ed-84b0c6af45ec
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -239,13 +239,12 @@ jobs:
 
               echo "Checking for pending job on branch ${{ github.ref_name }}"
               while true; do
-                job_list=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --query 'jobSummaries[?status == "PENDING" || status == "RUNNING"].id' --output "json" --no-paginate)
-                echo "HEREEEEEEEEEEE: $job_list"
-                job_count=$(echo $job_list | jq 'length')
-                echo "COUNTTTTTTTTTT: $job_count"
-                if [ "$job_count" -gt 0 ]; then
-                  echo "$job_count Pending Job(s) found on branch ${{ github.ref_name }}. Waiting..."
-                  sleep 10  
+                pending_jobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --query 'jobSummaries[?status == "PENDING" || status == "RUNNING"].id' --output "json" --no-paginate)
+                pending_job_count=$(echo $pending_jobs | jq 'length')
+                echo "Pending Jobs: $pending_job_count"
+                if [ "$pending_job_count" -gt 0 ]; then
+                    echo "$pending_job_count Pending Job(s) found on branch ${{ github.ref_name }}. Waiting..."
+                    sleep 10  
                 else
                   echo "All Pending Jobs done... Proceeding"
                   break
