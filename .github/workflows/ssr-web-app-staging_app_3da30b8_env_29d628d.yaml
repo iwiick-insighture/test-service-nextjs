@@ -1,15 +1,16 @@
-name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
+name: ssr-web-app-staging_app_3da30b8_env_29d628d Pipeline (Skyu Generated)
 'on':
   push:
     branches:
-      - master
+      - staging
+      - release/*
     tags:
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_6a2e354f-1757-491e-98ba-ddbda3cb6d27
+    types: pipeline_6a70f885-77d2-4289-a6a1-21e2836e762c
 env:
-  ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
+  ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPSTAGING_APP_3DA30B8_ENV_29D628D}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
   DEPLOY_STEP_SHOULD_DEPLOY: 'false'
 jobs:
