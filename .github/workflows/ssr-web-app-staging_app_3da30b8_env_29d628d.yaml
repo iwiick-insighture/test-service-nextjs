@@ -8,7 +8,7 @@ name: ssr-web-app-staging_app_3da30b8_env_29d628d Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_760daab6-5d00-4926-8930-a44e4d7030b1
+    types: pipeline_b7566636-311d-4ec7-b13d-1834b06d6042
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPSTAGING_APP_3DA30B8_ENV_29D628D}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
