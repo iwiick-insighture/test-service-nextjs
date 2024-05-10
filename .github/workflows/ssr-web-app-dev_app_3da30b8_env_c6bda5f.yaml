@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_37cb739d-6b3a-461f-94b4-4fa7bdb68a42
+    types: pipeline_d1486b58-0ad7-4581-b16c-d80c62ca4d3f
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -173,7 +173,7 @@ jobs:
 
               echo "Fetching Amplify Apps"
               app_list=$(aws amplify list-apps --no-paginate --region ${{ env.region }})
-              app_id=$(echo "$app_list" | jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}") | jq -r .appId')
+              app_id=$(echo "$app_list" | jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}")' | jq -r .appId)
 
               build_spec='{
                 "version": 1,
