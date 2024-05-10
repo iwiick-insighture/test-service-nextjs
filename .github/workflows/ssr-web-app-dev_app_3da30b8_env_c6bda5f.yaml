@@ -226,7 +226,7 @@ jobs:
               appId=${{ steps.initialize-amplify.outputs.appId }}
               productionBranch=${{ steps.initialize-amplify.outputs.productionBranch }}
 
-              if [ (-z "$productionBranch") && ("$productionBranch" != "${{ github.ref_name }}") ]; then 
+              if [ -z "$productionBranch" && "$productionBranch" != "${{ github.ref_name }}" ]; then 
                 echo "Production Branch has Changed"
                 echo "Deleting Previous Production Branch"
                 aws amplify delete-branch --app-id $appId --branch-name $productionBranch
