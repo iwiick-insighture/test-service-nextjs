@@ -227,7 +227,7 @@ jobs:
               appId=${{ steps.initialize-amplify.outputs.appId }}
               productionBranch=${{ steps.initialize-amplify.outputs.productionBranch }}
 
-              echo "HEREEEEEEEEEEEEEEEEEEEEEE: [ "$productionBranch" != "${{ github.ref_name }}" ]"
+              echo "HEREEEEEEEEEEEEEEEEEEEEEE: [ \"$productionBranch\" != \"${{ github.ref_name }}\" ]"
 
               if [ -z "$productionBranch" ] && [ "$productionBranch" != "${{ github.ref_name }}" ]; then 
                 echo "Production Branch has Changed"
