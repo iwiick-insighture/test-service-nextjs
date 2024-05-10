@@ -7,7 +7,7 @@ name: ssr-web-app-dev_app_3da30b8_env_c6bda5f Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_1644fc5b-3317-4a78-818b-46ce75f54b73
+    types: pipeline_37cb739d-6b3a-461f-94b4-4fa7bdb68a42
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_3DA30B8_ENV_C6BDA5F}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -173,8 +173,7 @@ jobs:
 
               echo "Fetching Amplify Apps"
               app_list=$(aws amplify list-apps --no-paginate --region ${{ env.region }})
-              app_id=$(echo "$app_list" | jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}")' | jq -r .appId)
-              echo "App IDDDDDDDDDDDDDDDD: $app_id"
+              app_id=$(echo "$app_list" | jq -r '.apps[] | select(.name == "${{ env.APPLICATION_NAME }}") | jq -r .appId')
 
               build_spec='{
                 "version": 1,
@@ -203,7 +202,7 @@ jobs:
 
               if [ -n "$app_id" ]; then
                 echo "Amplify App already exists. Updating..."
-                # aws amplify update-app         --app-id "$app_id         --environment-variables "Branch=${{ github.ref }},Commit=${{ github.sha }}"         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec" 
+                aws amplify update-app         --app-id "$app_id"         --environment-variables "Branch=${{ github.ref }},Commit=${{ github.sha }}"         --iam-service-role-arn "${{ env.roleARN }}"         --build-spec "$build_spec" 
               else
                 echo "Initializing new Amplify App"
                 formattedRepoUrl=$(echo "${{ github.repositoryUrl }}" | sed 's|git://|https://|') 
