@@ -8,7 +8,7 @@ name: ssr-web-app-staging_app_3da30b8_env_29d628d Pipeline (Skyu Generated)
       - v*
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_c7abd9e5-c06f-484d-b3d1-da8ff13aed91
+    types: pipeline_95fa44e3-1c9b-4add-bd5c-8e3ab8c4701d
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPSTAGING_APP_3DA30B8_ENV_29D628D}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -227,14 +227,18 @@ jobs:
               appId=${{ steps.initialize-amplify.outputs.appId }}
               productionBranch=${{ steps.initialize-amplify.outputs.productionBranch }}
 
-              echo "HEREEEEEEEEEEEEEEEEEEEEEE: [ \"$productionBranch\" != \"${{ github.ref_name }}\" ]"
+              if [ -z "$productionBranch" ]; then 
+                if [ "$productionBranch" != "${{ github.ref_name }}" ]; then
+                  echo "Production Branch has Changed"
+                  echo "Deleting Previous Production Branch"
+                  aws amplify delete-branch --app-id $appId --branch-name $productionBranch
+                
+                else 
+                  echo "Production Branch Remains the Same"
+                fi
 
-              if [ -z "$productionBranch" ] && [ "$productionBranch" != "${{ github.ref_name }}" ]; then 
-                echo "Production Branch has Changed"
-                echo "Deleting Previous Production Branch"
-                aws amplify delete-branch --app-id $appId --branch-name $productionBranch
               else
-                echo "Production Branch Remains the Same"
+                echo "Production Branch Not found"
               fi
 
               echo "Creating Deployment branch"
