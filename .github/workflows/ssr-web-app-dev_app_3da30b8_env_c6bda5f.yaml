@@ -240,7 +240,7 @@ jobs:
               echo "Checking for pending job on branch ${{ github.ref_name }}"
               while true; do
                 jobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --output "json" --no-paginate)
-                filtered_jobs=$(echo $jobs | jq '.jobSummaries | map(select(.status | IN("FAILED", "SUCCEED", "CANCELLED") | not)) | .[]') 
+                filtered_jobs=$(echo $jobs | jq '.jobSummaries | map(select(.status | IN("FAILED", "SUCCEED", "CANCELLED") | not))') 
                 echo "Filtered Jobs: $filtered_jobs"
                 pending_jobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --query 'jobSummaries[?!(status == `FAILED` || status == `SUCCEED` || status == `CANCELLED`)].id' --output "json" --no-paginate)
                 pending_job_count=$(echo $pending_jobs | jq 'length')
