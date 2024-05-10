@@ -241,7 +241,7 @@ jobs:
               while true; do
                 jobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --output "json" --no-paginate)
                 echo "All Jobs: $jobs"
-                pending_jobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --query 'jobSummaries[?status == "PENDING" || status == "RUNNING"].id' --output "json" --no-paginate)
+                pending_jobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --query 'jobSummaries[?!(status == `FAILED` || status == `SUCCEED` || status == `CANCELLED`)].id' --output "json" --no-paginate)
                 pending_job_count=$(echo $pending_jobs | jq 'length')
                 echo "Pending Jobs: $pending_job_count"
                 if [ "$pending_job_count" -gt 0 ]; then
