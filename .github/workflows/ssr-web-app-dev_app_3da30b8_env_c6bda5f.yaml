@@ -238,7 +238,9 @@ jobs:
               aws amplify create-branch --stage PRODUCTION --app-id $appId --branch-name ${{ github.ref_name }} || true
 
               echo "Checking for pending job on branch ${{ github.ref_name }}"
-              while true; do
+              while [true]; do
+                job=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --output "json" --no-paginate)
+                echo "All Jobs: $jobs"
                 pending_jobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --query 'jobSummaries[?status == "PENDING" || status == "RUNNING"].id' --output "json" --no-paginate)
                 pending_job_count=$(echo $pending_jobs | jq 'length')
                 echo "Pending Jobs: $pending_job_count"
