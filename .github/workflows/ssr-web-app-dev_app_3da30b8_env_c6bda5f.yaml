@@ -226,7 +226,7 @@ jobs:
               appId=${{ steps.initialize-amplify.outputs.appId }}
               productionBranch=${{ steps.initialize-amplify.outputs.productionBranch }}
 
-              if [ -z "$productionBranch" && "$productionBranch" != "${{ github.ref_name }}" ]; then 
+              if [ (-z "$productionBranch") && ("$productionBranch" != "${{ github.ref_name }}") ]; then 
                 echo "Production Branch has Changed"
                 echo "Deleting Previous Production Branch"
                 aws amplify delete-branch --app-id $appId --branch-name $productionBranch
@@ -239,7 +239,7 @@ jobs:
 
               echo "Checking for pending job on branch ${{ github.ref_name }}"
               while true; do
-                job=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --output "json" --no-paginate)
+                jobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --output "json" --no-paginate)
                 echo "All Jobs: $jobs"
                 pending_jobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --query 'jobSummaries[?status == "PENDING" || status == "RUNNING"].id' --output "json" --no-paginate)
                 pending_job_count=$(echo $pending_jobs | jq 'length')
