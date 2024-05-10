@@ -239,7 +239,7 @@ jobs:
 
               echo "Checking for pending job on branch ${{ github.ref_name }}"
               while true; do
-                test=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --output "text" --no-paginate)
+                test=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --output "json" --no-paginate)
                 echo "HEREEEEEEEEEEE: $test"
                 exit 1
                 pendingJobs=$(aws amplify list-jobs --app-id $appId --branch-name "${{ github.ref_name }}" --query 'jobSummaries[?status == "PENDING" || status == "RUNNING"].id' --output "text" --no-paginate)
