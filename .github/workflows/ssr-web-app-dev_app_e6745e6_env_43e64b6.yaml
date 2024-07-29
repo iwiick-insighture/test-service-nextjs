@@ -12,7 +12,7 @@ name: ssr-web-app-dev_app_e6745e6_env_43e64b6 Pipeline (Skyu Generated)
       - README.md
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_0a9c6652-ff00-4366-b914-702415049e4e
+    types: pipeline_58bd6fe2-4a1e-4201-9dda-a8336d8a8e63
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_E6745E6_ENV_43E64B6}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -231,6 +231,13 @@ jobs:
               appId=${{ steps.initialize-amplify.outputs.appId }}
 
               response=$(curl -X POST -d "amplifyAppId=$appId"  -H 'Authorization: ${{ env.SERVICE_ACC_ACCESS_TOKEN }}' -H 'x-organization-id: ${{ env.PIPELINE_ORGANIZATION_ID }}' -H 'x-project-id: ${{ env.PIPELINE_PROJECT_ID }}' -H 'x-environment-id: ${{ env.PIPELINE_ENVIRONMENT_ID }}' -H 'x-application-id: ${{ env.PIPELINE_APPLICATION_ID }}' -H 'x-trace-id: ${{ env.PIPELINE_TRACE_ID }}' -H 'x-auth-by: sa' -H 'Content-Type: application/x-www-form-urlencoded'  "${{ env.API_GATEWAY_BASEURL }}/resource-service/application-data/${{ env.PIPELINE_APPLICATION_ID }}/ssr-amplify")
+
+              if echo "$response" | grep -q '"success":true'; then
+                echo "SUCCESS :: $response"
+              else
+                echo "FAILED :: $response"
+                exit 1
+              fi
               
       - name: 'Run :: Publish to AWS Amplify'
         run: |2-
