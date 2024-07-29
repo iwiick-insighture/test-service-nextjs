@@ -12,7 +12,7 @@ name: ssr-web-app-dev_app_e6745e6_env_43e64b6 Pipeline (Skyu Generated)
       - README.md
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_58bd6fe2-4a1e-4201-9dda-a8336d8a8e63
+    types: pipeline_cf11c815-8302-404e-8ad0-fd39be0905ad
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_E6745E6_ENV_43E64B6}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
