@@ -12,7 +12,7 @@ name: ssr-web-app-dev_app_e6745e6_env_43e64b6 Pipeline (Skyu Generated)
       - README.md
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_cf11c815-8302-404e-8ad0-fd39be0905ad
+    types: pipeline_aee1567a-b1ff-4156-a0a9-c51fe4304d9b
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_E6745E6_ENV_43E64B6}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -229,6 +229,7 @@ jobs:
         run: |2-
 
               appId=${{ steps.initialize-amplify.outputs.appId }}
+              echo "App ID: $appId"
 
               response=$(curl -X POST -d "amplifyAppId=$appId"  -H 'Authorization: ${{ env.SERVICE_ACC_ACCESS_TOKEN }}' -H 'x-organization-id: ${{ env.PIPELINE_ORGANIZATION_ID }}' -H 'x-project-id: ${{ env.PIPELINE_PROJECT_ID }}' -H 'x-environment-id: ${{ env.PIPELINE_ENVIRONMENT_ID }}' -H 'x-application-id: ${{ env.PIPELINE_APPLICATION_ID }}' -H 'x-trace-id: ${{ env.PIPELINE_TRACE_ID }}' -H 'x-auth-by: sa' -H 'Content-Type: application/x-www-form-urlencoded'  "${{ env.API_GATEWAY_BASEURL }}/resource-service/application-data/${{ env.PIPELINE_APPLICATION_ID }}/ssr-amplify")
 
