@@ -16,7 +16,6 @@ name: ssr-web-app-dev_app_e6745e6_env_43e64b6 Pipeline (Skyu Generated)
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_E6745E6_ENV_43E64B6}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
-  BRANCH_NAME: ${{github.event.client_payload.branchName || github.ref}}
   DEPLOY_STEP_SHOULD_DEPLOY: 'false'
 jobs:
   code-scan:
