@@ -14,7 +14,7 @@ name: ssr-web-app-dev_app_9264a0a_env_31ddbbd Pipeline (Skyu Generated)
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_9264A0A_ENV_31DDBBD}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
-  BRANCH_NAME: ${{github.event.client_payload.branchName || github.event.branch}}
+  BRANCH_NAME: ${{github.event.client_payload.branchName || github.ref}}
   DEPLOY_STEP_SHOULD_DEPLOY: 'false'
 jobs:
   code-scan:
@@ -224,7 +224,6 @@ jobs:
           aws-region: ${{ env.region }}
       - name: 'Run :: Initialize AWS Amplify'
         env:
-          BRANCH_NAME: ${{ github.ref }}
           REPOSITORY: ${{ github.repositoryUrl }}
         id: initialize-amplify
         run: |2-
