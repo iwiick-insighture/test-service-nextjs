@@ -224,6 +224,7 @@ jobs:
           aws-region: ${{ env.region }}
       - name: 'Run :: Initialize AWS Amplify'
         env:
+          BRANCH_NAME: ${{ github.ref }}
           REPOSITORY: ${{ github.repositoryUrl }}
         id: initialize-amplify
         run: |2-
