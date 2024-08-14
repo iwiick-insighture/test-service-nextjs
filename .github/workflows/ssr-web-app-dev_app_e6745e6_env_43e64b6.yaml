@@ -12,7 +12,7 @@ name: ssr-web-app-dev_app_e6745e6_env_43e64b6 Pipeline (Skyu Generated)
       - README.md
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_c15f0a80-6cdf-45f2-aaab-c735788f9d26
+    types: pipeline_a0d8f055-4637-47ab-af8d-49661abf43cc
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.TESTSERVICENEXTJS_SSRWEBAPPDEV_APP_E6745E6_ENV_43E64B6}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -295,15 +295,13 @@ jobs:
               fi
               
       - name: 'Run :: Publish to AWS Amplify'
-        env:
-          BRANCH: ${{ github.ref_name }}
         run: |2-
 
               appId=${{ steps.initialize-amplify.outputs.appId }}
               productionBranch=${{ steps.initialize-amplify.outputs.productionBranch }}
 
               if [ -n "$productionBranch" ]; then 
-                if [ "$productionBranch" != "$BRANCH" ]; then
+                if [ "$productionBranch" != "$BRANCH_NAME" ]; then
                   echo "Production Branch has Changed"
                   echo "Deleting Previous Production Branch"
                   aws amplify delete-branch --app-id $appId --branch-name $productionBranch
@@ -316,17 +314,17 @@ jobs:
               fi
 
               echo "Creating Deployment branch"
-              aws amplify create-branch --stage PRODUCTION --app-id $appId --branch-name $BRANCH || true
+              aws amplify create-branch --stage PRODUCTION --app-id $appId --branch-name $BRANCH_NAME || true
 
-              echo "Checking for pending job on branch $BRANCH"
+              echo "Checking for pending job on branch $BRANCH_NAME"
               while true; do
-                jobs=$(aws amplify list-jobs --app-id $appId --branch-name "$BRANCH" --output "json" --no-paginate)
+                jobs=$(aws amplify list-jobs --app-id $appId --branch-name "$BRANCH_NAME" --output "json" --no-paginate)
                 pending_jobs=$(echo $jobs | jq '.jobSummaries | map(select(.status | IN("FAILED", "SUCCEED", "CANCELLED") | not))') 
                 pending_job_count=$(echo $pending_jobs | jq 'length')
                 echo "Pending Jobs: $pending_job_count"
 
                 if [ "$pending_job_count" -gt 0 ]; then
-                    echo "$pending_job_count Pending Job(s) found on branch $BRANCH. Waiting..."
+                    echo "$pending_job_count Pending Job(s) found on branch $BRANCH_NAME. Waiting..."
                     sleep 10  
                 else
                   echo "All Pending Jobs done... Proceeding"
@@ -335,7 +333,7 @@ jobs:
               done
 
               echo "Starting Amplify Job"
-              aws amplify start-job --app-id $appId --branch-name $BRANCH --job-type RELEASE
+              aws amplify start-job --app-id $appId --branch-name $BRANCH_NAME --job-type RELEASE
               
   _status-success:
     name: ' Status Success'
