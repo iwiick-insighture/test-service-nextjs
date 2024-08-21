@@ -298,7 +298,8 @@ jobs:
               appId=${{ steps.initialize-amplify.outputs.appId }}
               productionBranch=${{ steps.initialize-amplify.outputs.productionBranch }}
 
-              if [ -n "$productionBranch" ]; then 
+              if [ -n "$productionBranch" ]; then
+                echo "Production Branch: $productionBranch"
                 if [ "$productionBranch" != "$BRANCH_NAME" ]; then
                   echo "Production Branch has Changed"
                   echo "Deleting Previous Production Branch"
