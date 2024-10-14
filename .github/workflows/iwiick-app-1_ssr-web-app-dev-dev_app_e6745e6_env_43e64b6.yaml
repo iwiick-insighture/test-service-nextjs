@@ -14,7 +14,7 @@ name: >-
       - README.md
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_edbf317e-6753-4cb4-901a-1840f8ca0bc9
+    types: pipeline_4fd1427a-279d-4d6f-b114-60639e0ea37e
 env:
   ENCODED_PIPELINE_SECRET: >-
     ${{secrets.TESTSERVICENEXTJS_IWIICKAPP1_SSRWEBAPPDEVDEV_APP_E6745E6_ENV_43E64B6}}
@@ -397,12 +397,13 @@ jobs:
                 echo "Formatted Repository URL: $formattedRepoUrl"
 
                 if [ -n ${{ github.event.client_payload.cloneUrl }} ]; then
-                  create_app=$(
-                    aws amplify create-app           --name ${{ env.APPLICATION_NAME }}           --platform WEB_COMPUTE           --repository $formattedRepoUrl           --environment-variables "Branch=$BRANCH_NAME,Commit=$COMMIT_ID${{ env.AMPLIFY_ENV_VARS }}"           --oauth-token ${{ env.pat }} `
-                    --region ${{ env.region }}           --iam-service-role-arn ${{ env.roleARN }}           --build-spec "$build_spec"         )
+                  token_flag="--oauth-token"
                 else
-                  create_app=$(
-                    aws amplify create-app           --name ${{ env.APPLICATION_NAME }}           --platform WEB_COMPUTE           --repository $formattedRepoUrl           --environment-variables "Branch=$BRANCH_NAME,Commit=$COMMIT_ID${{ env.AMPLIFY_ENV_VARS }}"           --access-token ${{ env.pat }}           --region ${{ env.region }}           --iam-service-role-arn ${{ env.roleARN }}           --build-spec "$build_spec"         )
+                  token_flag="--access-token"
+                fi
+
+                create_app=$(
+                  aws amplify create-app         --name ${{ env.APPLICATION_NAME }}         --platform WEB_COMPUTE         --repository $formattedRepoUrl         --environment-variables "Branch=$BRANCH_NAME,Commit=$COMMIT_ID${{ env.AMPLIFY_ENV_VARS }}"         $token_flag ${{ env.pat }}         --region ${{ env.region }}         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec"       )
                 app_id=$(echo $create_app | jq -r '.app.appId')
               fi
               
