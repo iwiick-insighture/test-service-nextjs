@@ -12,7 +12,7 @@ name: iwiick-app-1_ssr-web-app-dev_app_d08e17b_env_3017388 Pipeline (Skyu Genera
       - README.md
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_764a96bb-5ea0-4354-b9b4-0adfd63b7b9b
+    types: pipeline_7bfef2ba-b19e-496d-b581-c4fe17adc9b9
 env:
   ENCODED_PIPELINE_SECRET: >-
     ${{secrets.TESTSERVICENEXTJS_IWIICKAPP1_SSRWEBAPPDEV_APP_D08E17B_ENV_3017388}}
@@ -418,7 +418,7 @@ jobs:
                 echo "Production Branch: $production_branch"
                 echo "productionBranch=$production_branch" >> $GITHUB_OUTPUT
 
-                aws amplify update-app         --app-id "$app_id"         --platform ${{ env.AMPLIFY_PLATFORM }}         --environment-variables "Branch=$BRANCH_NAME,Commit=$COMMIT_ID${{ env.AMPLIFY_ENV_VARS }}"         --iam-service-role-arn "${{ env.roleARN }}"         --build-spec "$build_spec" 
+                aws amplify update-app         --app-id "$app_id"         --environment-variables "Branch=$BRANCH_NAME,Commit=$COMMIT_ID${{ env.AMPLIFY_ENV_VARS }}"         --iam-service-role-arn "${{ env.roleARN }}"         --build-spec "$build_spec" 
               else
                 echo "Initializing new Amplify App"
                 formattedRepoUrl=$(echo "$REPOSITORY" | sed 's|git://|https://|') 
@@ -433,7 +433,7 @@ jobs:
                 fi
 
                 create_app=$(
-                  aws amplify create-app         --name ${{ env.APPLICATION_NAME }}         --platform ${{ env.AMPLIFY_PLATFORM }}         --repository $formattedRepoUrl         --environment-variables "Branch=$BRANCH_NAME,Commit=$COMMIT_ID${{ env.AMPLIFY_ENV_VARS }}"         $token_flag $access_token         --region ${{ env.region }}         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec"       )
+                  aws amplify create-app         --name ${{ env.APPLICATION_NAME }}         --platform WEB_COMPUTE         --repository $formattedRepoUrl         --environment-variables "Branch=$BRANCH_NAME,Commit=$COMMIT_ID${{ env.AMPLIFY_ENV_VARS }}"         $token_flag $access_token         --region ${{ env.region }}         --iam-service-role-arn ${{ env.roleARN }}         --build-spec "$build_spec"       )
                 app_id=$(echo $create_app | jq -r '.app.appId')
               fi
               
