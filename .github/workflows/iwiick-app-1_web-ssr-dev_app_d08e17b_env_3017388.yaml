@@ -417,7 +417,7 @@ jobs:
                 echo "Production Branch: $production_branch"
                 echo "productionBranch=$production_branch" >> $GITHUB_OUTPUT
 
-                aws amplify update-app         --app-id "$app_id"         --environment-variables "Branch=$BRANCH_NAME,Commit=$COMMIT_ID${{ env.AMPLIFY_ENV_VARS }}"         --iam-service-role-arn "${{ env.roleARN }}"         --build-spec "$build_spec" 
+                aws amplify update-app         --app-id "$app_id"         --platform ${{ env.AMPLIFY_PLATFORM }}         --environment-variables "Branch=$BRANCH_NAME,Commit=$COMMIT_ID${{ env.AMPLIFY_ENV_VARS }}"         --iam-service-role-arn "${{ env.roleARN }}"         --build-spec "$build_spec" 
               else
                 echo "Initializing new Amplify App"
                 formattedRepoUrl=$(echo "$REPOSITORY" | sed 's|git://|https://|') 
